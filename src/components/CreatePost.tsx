@@ -12,11 +12,12 @@ interface PostInput {
 }
 
 const createPost = async (post: PostInput, imageFile: File) => {
-  const filePath = `${post.title}-${Date.now()}-${imageFile.name}`;
+  const cleanTitle = post.title.replace(/[^a-z0-9]/gi, "-").toLowerCase();
+  const filePath = `${cleanTitle}-${Date.now()}-${imageFile.name}`;
 
   const { error: uploadError } = await supabase.storage
     .from("post-images")
-    .upload(filePath, imageFile);
+    .upload(filePath, imageFile);  // <- fixed!
 
   if (uploadError) throw new Error(uploadError.message);
 
@@ -37,9 +38,7 @@ export const CreatePost = () => {
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [communityId, setCommunityId] = useState<number | null>(null);
-
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
   const { user } = useAuth();
 
   const { data: communities } = useQuery<Community[], Error>({
@@ -55,7 +54,19 @@ export const CreatePost = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (!selectedFile) return;
+    if (!selectedFile) {
+      alert("Please select a file first.");
+      return;
+    }
+    if (selectedFile.size > 5 * 1024 * 1024) { // 5MB limit
+      alert("File size too large! Please upload files below 5MB.");
+      return;
+    }
+    if (!selectedFile.type.startsWith("image/")) {
+      alert("Only image files are allowed!");
+      return;
+    }
+    
     mutate({
       post: {
         title,
@@ -66,6 +77,7 @@ export const CreatePost = () => {
       imageFile: selectedFile,
     });
   };
+  
 
   const handleCommunityChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
