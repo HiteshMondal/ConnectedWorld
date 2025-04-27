@@ -36,6 +36,7 @@ export const PostList = () => {
       </div>
     );
   }
+  
 
   if (error) {
     return (
