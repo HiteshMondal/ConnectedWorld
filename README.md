@@ -1,3 +1,33 @@
+# My Project
+
+## Overview
+
+This project is a ConnectedWorld which allows users to to to be social online and se or create post. It includes features like **authentication with GitHub using Supabase**, **community-based posts**, and **media upload**.
+
+## Technologies Used
+
+- **Frontend**: React, Vite
+- **Backend**: Supabase
+- **Database**: PostgreSQL (via Supabase)
+- **Authentication**: Supabase Auth (GitHub OAuth)
+- **File Storage**: Supabase Storage
+- **State Management**: React Context API, React Query
+
+## Features
+
+- User authentication with GitHub.
+- Users can create posts, select communities, and upload images.
+- Real-time updates using Supabase's realtime features.
+- Communities allow users to group posts by topics.
+- Responsive UI with modern CSS styling.
+
+## Installation
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/your-username/your-project-name.git
+cd your-project-name
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
