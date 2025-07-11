@@ -1,6 +1,12 @@
+version: "3.8"
+
 services:
-    img:
+  web:
     build: .
-    container_name: basic-container
     ports:
-      - 5173:5173  
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
