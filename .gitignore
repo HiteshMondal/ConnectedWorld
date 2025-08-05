@@ -33,3 +33,10 @@ infra/*.tfplan
 infra/*.tfbackup
 infra/crash.log
 infra/.terraform/providers/registry.terraform.io/hashicorp/aws/*/terraform-provider-aws_*.exe
+
+# Ignore override and plan files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+*.tfplan

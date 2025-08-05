@@ -82,3 +82,16 @@ export default tseslint.config({
   },
 })
 ```
+# AWS Free Tier Terraform Example
+
+## Features
+- EC2 instance (Ubuntu, Free Tier)
+- S3 Bucket
+- Security Group for SSH/HTTP
+- Outputs for public IP, instance ID, and S3 bucket name
+
+## Usage
+
+1. **Create a Key Pair** in AWS EC2 and note the key name.
+2. **Edit `terraform.tfvars`**: set the key pair and a unique S3 bucket name.
+3. **Initialize Terraform**
