@@ -25,5 +25,11 @@ dist-ssr
 *.sw?
 
 # Ignore Terraform provider executables
+infra/.terraform/
+infra/.terraform.lock.hcl
+infra/terraform.tfstate
+infra/terraform.tfstate.*
+infra/*.tfplan
+infra/*.tfbackup
+infra/crash.log
 infra/.terraform/providers/registry.terraform.io/hashicorp/aws/*/terraform-provider-aws_*.exe
-infra/.terraform
