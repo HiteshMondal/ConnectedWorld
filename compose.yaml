@@ -10,3 +10,11 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
+nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile.nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - web  # optional, only if nginx ever proxies to web (not needed if just static)
