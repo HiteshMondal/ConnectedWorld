@@ -1,18 +1,49 @@
-# Use lightweight Node image
-FROM node:20-alpine
+# -----------------------------
+# 1. Build Stage
+# -----------------------------
+FROM node:20-alpine AS builder
 
-# Set working directory
 WORKDIR /app
 
-# Install dependencies
+# Copy package.json and lockfile
 COPY package*.json ./
-RUN npm ci
 
-# Copy the rest of the project
+# Install dependencies
+RUN npm ci --silent
+
+# Copy all source files
 COPY . .
 
-# Expose Vite default port
-EXPOSE 5173
+# Build production assets
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+RUN npm run build
 
-# Start Vite dev server
-CMD ["npx", "vite", "--host"]
+# -----------------------------
+# 2. Production Stage
+# -----------------------------
+FROM nginx:alpine AS production
+
+WORKDIR /usr/share/nginx/html
+
+# Remove default Nginx files
+RUN rm -rf ./*
+
+# Copy built frontend from builder
+COPY --from=builder /app/dist ./
+
+# Copy custom nginx config
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+
+# Fix permissions for non-root Nginx
+RUN mkdir -p /var/cache/nginx /var/run/nginx \
+    && chown -R nginx:nginx /var/cache/nginx /var/run/nginx
+
+# Expose container port
+EXPOSE 80
+
+# Use non-root user
+USER nginx
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
